@@ -33,19 +33,13 @@ script "install-libev" do
   only_if {::File.exists?("#{Chef::Config[:file_cache_path]}/libev-#{version}.tar.gz")}
   flags "-e -x"
   code <<-EOH
-    cd #{Chef::Config[:file_cache_path]}
-    tar xzf libev-#{version}.tar.gz
+    cd /usr/local/src
+    tar xzf #{Chef::Config[:file_cache_path]}/libev-#{version}.tar.gz
     cd libev-#{version}
     ./configure --prefix=#{prefix}
     make
     make install
   EOH
-end
-
-directory "libev-source-cleanup" do
-  path "#{Chef::Config[:file_cache_path]}/libev-#{version}"
-  action :delete
-  recursive true
 end
 
 file "libev-tarball-cleanup" do
